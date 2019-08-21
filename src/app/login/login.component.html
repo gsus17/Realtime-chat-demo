@@ -8,7 +8,7 @@
     <div fxFlex
          fxLayout="row"
          fxLayoutAlign="center center">
-      <span class="mat-title">Realtime chat demo</span>
+      <span class="mat-title">Realtime chat demo (Users)</span>
     </div>
     <div fxHide.xs="true"
          fxFlex
@@ -46,6 +46,7 @@
            class="fx-margin">
         <button fxFlex
                 mat-raised-button
+                [disabled]="true"
                 color="accent"
                 (click)="twitterLogin()">Twitter</button>
       </div>

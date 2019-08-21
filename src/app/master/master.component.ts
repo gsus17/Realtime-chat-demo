@@ -76,6 +76,7 @@ export class MasterComponent implements OnInit, OnDestroy {
       this.firebaseDb
         .setMessage(this.user.uid, newMessage)
         .then(() => {
+          this.firebaseDb.updateMessageUnread(this.user);
           this.newMessage = '';
         });
     }

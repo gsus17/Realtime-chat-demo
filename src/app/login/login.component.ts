@@ -2,6 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { FirebaseAuthService } from './firebase-auth/firebase-auth.service';
 import { Router } from '@angular/router';
 import { User } from '../interfaces/user';
+import { FirebaseDBService } from '../master/firebase-db/firebase-db.service';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private firebaseAuthService: FirebaseAuthService,
+    private db: FirebaseDBService,
     private zone: NgZone,
     private router: Router) { }
 
@@ -46,7 +48,7 @@ export class LoginComponent implements OnInit {
    * Save user login.
    */
   private saveLocalUser(res: any) {
-    console.log(`${LoginComponent.name}::saveUser`);
+    console.log(`${LoginComponent.name}::saveLocalUser`);
 
     const user: User = {
       uid: res.user.uid,
@@ -55,6 +57,7 @@ export class LoginComponent implements OnInit {
     };
 
     this.firebaseAuthService.setUser(user);
+    this.db.createUser(user);
   }
 
   /**

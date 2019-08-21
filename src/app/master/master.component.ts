@@ -1,24 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FirebaseDBService } from './firebase-db/firebase-db.service';
 import { FirebaseAuthService } from '../login/firebase-auth/firebase-auth.service';
 import { Router } from '@angular/router';
 import { Message } from '../interfaces/message';
 import { User } from '../interfaces/user';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-master',
   templateUrl: './master.component.html',
   styleUrls: ['./master.component.scss']
 })
-export class MasterComponent implements OnInit {
-
+export class MasterComponent implements OnInit, OnDestroy {
   public messages: any[] = [];
-
   public newMessage = '';
-
   public user: User = null;
-
   private element: HTMLElement;
+  private subscriptionReference: Subscription = null;
 
   constructor(
     private firebaseDb: FirebaseDBService,
@@ -35,12 +33,20 @@ export class MasterComponent implements OnInit {
   }
 
   /**
+   * Unsubscription.
+   */
+  public ngOnDestroy() {
+    this.subscriptionReference.unsubscribe();
+  }
+
+  /**
    * Load messages.
    */
   public loadMessages() {
     console.log(`${MasterComponent.name}::loadMessages`);
 
-    this.firebaseDb.getMessages()
+    this.subscriptionReference = this.firebaseDb
+      .getMessages$(this.user.uid)
       .subscribe((response) => {
         this.messages = response;
         this.updateScroll();
@@ -67,7 +73,8 @@ export class MasterComponent implements OnInit {
         message: this.newMessage
       };
 
-      this.firebaseDb.setMessage(newMessage)
+      this.firebaseDb
+        .setMessage(this.user.uid, newMessage)
         .then(() => {
           this.newMessage = '';
         });
@@ -83,11 +90,11 @@ export class MasterComponent implements OnInit {
     this.firebaseAuthService.logout()
       .then((res) => {
         console.log(`${MasterComponent.name}::success`, res);
+        this.firebaseDb.deleteUserData(this.user);
         this.goToLogin();
       })
       .catch((err) => {
         console.log(`${MasterComponent.name}::catch`, err);
-
       });
   }
 

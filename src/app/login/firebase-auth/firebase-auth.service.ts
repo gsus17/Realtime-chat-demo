@@ -7,10 +7,9 @@ import { User } from '../../interfaces/user';
   providedIn: 'root'
 })
 export class FirebaseAuthService {
-
   private currentUser: User = null;
 
-  constructor(public afAuth: AngularFireAuth) { }
+  constructor(private afAuth: AngularFireAuth) { }
 
   /**
    * Login with Google.

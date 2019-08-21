@@ -7,7 +7,8 @@ import { FirebaseAuthService } from './login/firebase-auth/firebase-auth.service
 })
 export class AuthGuardService implements CanActivate {
 
-  constructor(private fAuth: FirebaseAuthService,
+  constructor(
+    private fAuth: FirebaseAuthService,
     private router: Router) { }
 
   public canActivate() {

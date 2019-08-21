@@ -19,7 +19,7 @@ Real time chat demo user is a proyect to simulate a realtime chat with one opera
 * Firebase Authentication with Google and Twitter accounts.
 
 # Demo
-* https://realtime-chat-demo.firebaseapp.com
+* https://user-realtime-chat-demo.firebaseapp.com
 
 # Quickstart
 Run `npm install` 

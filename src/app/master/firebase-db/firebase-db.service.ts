@@ -17,7 +17,7 @@ export class FirebaseDBService {
   /**
    * Message unread subscription reference
    */
-  private messageUnreadSubscription: Subscription;
+  private messageUnreadSubscription: Subscription = null;
 
   constructor(public db: AngularFirestore) { }
 
@@ -81,7 +81,9 @@ export class FirebaseDBService {
     console.log(`${FirebaseDBService.name}::deleteUserData`);
     this.deleteUser(user);
     this.deleteConversation(user.uid);
-    this.messageUnreadSubscription.unsubscribe();
+    if (this.messageUnreadSubscription !== null) {
+      this.messageUnreadSubscription.unsubscribe();
+    }
   }
 
   /**
